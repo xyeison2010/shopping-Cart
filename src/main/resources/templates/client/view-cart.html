@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"  content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">   
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+	<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+<link rel="stylesheet" th:href="@{/css/jquery-ui.min.css}" />
+    <title>Document</title>
+
+</head>
+<body>
+
+<div class="alert alert-danger" th:if="${error != null}"
+			th:text="${error}"></div>
+<!-- fragments -->			
+<div th:replace="/fragments/navTopBar"></div>
+<div th:replace="/fragments/navbar"></div>	
+<!-- end fragments -->
+<main>
+
+    <div class="container">
+ 
+        <!--Section: Block Content-->
+        <section class="mt-5 mb-4">
+
+            <!--Grid row-->
+            <div class="row">
+
+     <!--Middle Part Start-->
+        <div id="content" class="col-sm-12">
+
+            <div th:if="${param.updateCart}">
+                <div class="alert alert-info">Cart item has been updated successfully!</div>
+            </div>
+            <div th:if="${param.removeCart}">
+                <div class="alert alert-danger">Cart item has been removed successfully!</div>
+            </div>
+            <div th:if="${param.emptyCart}">
+                <div class="alert alert-danger">Cart has been empty successfully!</div>
+            </div>
+
+            <h2 class="title">Shopping Cart</h2>
+            <div class="table-responsive form-group">
+                <table class="table table-bordered">
+                    <thead>
+                    <tr>
+                        <td class="text-center">Image</td>
+                        <td class="text-left">Product Name</td>
+                        <td class="text-left">Code</td>
+                        <td class="text-left">Quantity</td>
+                        <td class="text-right">Unit Price</td>
+                        <td class="text-right">Total</td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <div th:if="${shoppingCart != null}">
+                        <tr th:each="cartItem : ${shoppingCart.getCartItemList()}">
+                            <td class="text-center"><a th:href="@{/part-details(id=${cartItem.product.id})}"><img width="70px" th:src="@{${'/productImages/' + cartItem.product.imageName}}" th:alt="${cartItem.product.name}" th:title="${cartItem.product.name}" class="img-thumbnail" /></a></td>
+                            <td class="text-left"><a th:href="@{/part-details(id=${cartItem.product.id})}" th:text="${cartItem.product.name}"></a><br />
+                            </td>
+                            <form th:action="@{/update-cart}" method="post">
+                                <input type="hidden" name="id" th:value="${cartItem.product.id}" />
+                                <td class="text-left" th:text="${cartItem.product.code}"></td>
+                                <td class="text-left" width="200px"><div class="input-group btn-block quantity">
+                                    <input type="text" name="quantity" th:value="${cartItem.quantity}" size="1" class="form-control" />
+                                    <span class="input-group-btn">
+                                <button type="submit" data-toggle="tooltip" name="action" value="update" title="Update" class="btn btn-primary"><i class="fa fa-clone"></i></button>
+                                <button type="submit" data-toggle="tooltip" name="action" value="delete" title="Remove" class="btn btn-danger" onClick=""><i class="fa fa-times-circle"></i></button>
+                                </span></div></td>
+                            </form>
+                            <td class="text-right" th:text="${cartItem.ourPrice}"></td>
+                            <td class="text-right" th:text="${cartItem.totalPrice}"></td>
+                        </tr>
+                    </div>
+                    <div th:if="${shoppingCart == null}">
+                        <tr><td colspan="6" class="text-center">Cart is empty !</td></tr>
+                    </div>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-sm-4 col-sm-offset-8">
+                    <table class="table table-bordered">
+                        <tbody th:if="${shoppingCart != null}">
+                        <tr>
+                            <td class="text-right">
+                                <strong>Sub-Total:</strong>
+                            </td>
+                            <td class="text-right" th:text="${shoppingCart.subTotal}"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <strong>Tax Rate:</strong>
+                            </td>
+                            <td class="text-right" th:text="${shoppingCart.taxRate}"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <strong>Tax Total:</strong>
+                            </td>
+                            <td class="text-right" th:text="${shoppingCart.taxTotal}"></td>
+                        </tr>
+                        <tr>
+                            <td class="text-right">
+                                <strong>Total:</strong>
+                            </td>
+                            <td class="text-right" th:text="${shoppingCart.grandTotal}"></td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="buttons">
+                <div class="pull-left"><a th:href="@{/shop}" class="btn btn-primary">Continue shopping</a></div>
+                <div class="pull-right"><a th:href="@{/empty-cart}" class="btn btn-warning">Empty Cart</a> | <a th:href="@{/checkout}" class="btn btn-primary">Checkout</a></div>
+            </div>
+        </div>
+        <!--Middle Part End -->
+
+                <!--Grid column-->
+                <div class="col-lg-4">
+
+
+                    
+                </div>
+                <!--Grid column-->
+
+            </div>
+            <!--Grid row-->
+
+        </section>
+        <!--Section: Block Content-->
+ 
+    </div>
+     
+</main>
+<!--Main layout-->
+ 
+
+
+<!--JQUERY-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>	
+<script th:src="@{/js/jquery-ui.min.js}"></script>
+
+ 
+</body>
+</html>

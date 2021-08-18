@@ -1,0 +1,178 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+		
+    <title>Document</title>
+</head>
+<body>
+<!-- fragments -->			
+<div th:replace="/fragments/navTopBar"></div>
+<div th:replace="/fragments/navbar"></div>	
+<!-- end fragments -->
+	<div class="main-container container">
+
+			<!--Section: Block Content-->
+			<section class="mt-5 mb-4">
+
+				<!--Grid row-->
+				<div class="row">
+
+					<!--Grid column-->
+					<div class="col-lg-9 mb-4">
+
+						<!-- Card -->
+						<div class="card wish-list pb-1">
+							<div class="card-body">
+
+								<!-- Main Container  -->
+								<div class="main-container container">
+   <ul class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i></a></li>
+        <li><a href="#">Order Details</a></li>
+    </ul>
+
+    <div class="row">
+        <!--Middle Part Start-->
+        <div id="content" class="col-sm-12">
+         
+  
+<!-- EL TH ACTION relaciona con los post de controller , si la condicion es true va por la ? si es falsa va por:-->
+<form th:action="@{/my-account}" th:object="${user}" enctype="multipart/form-data" method="post">
+
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">First name</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${user.firstName}"  required placeholder="Your FirstName" th:disabled="${disableFields}">
+					<div class="alert-danger" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Name Error</div>	
+		</div>
+	</div>
+	<!-- thdisabled : la variable q declaramos arriba con el div -->
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Last name</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${user.lastName}" required placeholder="Your Lastname" th:disabled="${disableFields}" >
+			<div class="alert-danger" th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}">Name Error</div>
+	
+		</div>
+	</div>
+	
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Email</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="email" th:field="${user.email}" required minlength="6" th:disabled="${disableFields}" >
+			<div class="alert-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</div>
+		</div>
+	</div>
+	
+	<div class="form-group row">
+		<label class="col-lg-3 col-form-label form-control-label">Username</label>
+		<div class="col-lg-9">
+			<input class="form-control" type="text" th:field="${user.username}" required placeholder="Your Username" th:disabled="${disableFields}">
+			<div class="alert-danger" th:if="${#fields.hasErrors('username')}" th:errors="*{username}">Name Error</div>
+		</div>
+	</div>
+	<!-- pais -->
+	 <div class="form-group row">
+                        <label class="col-lg-3 col-form-label form-control-label" for="country">Country</label>
+                        <div class="col-lg-9">
+                            <select name="country_id" id="country" th:field="*{country}" class="form-control">
+                                <option value=""> --- Please Select --- </option>
+                                <option th:each="country : ${countries}" th:value="${country.id}" th:text="${country.code}+' - '+${country.name}"></option>
+                            </select>
+                            <p th:if="${#fields.hasErrors('country')}" th:errorclass="error" th:errors="*{country}" />
+                        </div>
+        </div>
+
+	
+	<div class="form-group row">
+		<div class="col-lg-12 text-center">
+			<a class="btn btn-secondary"  th:href="@{'/userForm/cancel'}">Cancel</a>
+<button type="button" class="btn btn-secondary" data-toggle="modal"  data-target="#changePasswordModal">Change Password</button>
+			<input type="submit" class="btn btn-primary"
+				value="Save Changes"  >
+		</div>
+	</div>
+	<div class="alert alert-danger text-center" th:if="${formErrorMessage}" th:text="${formErrorMessage}">Error MEssage</div>
+	<div class="alert alert-success text-center d-none" id="formSuccess"  >Success MEssage</div>
+</form>
+
+
+    </div>
+ <div  th:insert="user-form/change-password.html" th:remove="tag"></div>
+        <!--Middle Part End-->
+
+   <!--    <div th:replace="/my-account/template/leftnav"></div> -->
+
+    </div>									
+								</div>
+								<!-- //Main Container -->
+
+							</div>
+						</div>
+						<!-- Card -->
+
+					</div>
+					<!--Grid column-->
+
+					<!--Grid column-->
+					<div class="col-lg-3">
+
+						<!-- Card -->
+						<div class="card mb-4">
+							<div class="card-body">
+								<h4 class="panel-title">
+									<i class="fa fa-user"></i> tu cuenta
+								</h4>
+								<div class="panel-body">
+                <!--Right Part Start -->
+          <div class="col-sm-12 " id="column-right">
+             <h2 class="subtitle">Account</h2>
+            <div class="list-group">
+             <ul class="list-item">
+            <li><a th:href="@{/my-account}"><i class="fa fa-dashboard"></i> My Account</a></li>
+            <li><a th:href="@{/order-history}"><i class="fa fa-history"></i> Order History</a></li>
+            <li><a th:href="@{/change-password}"><i class="fa fa-key"></i> Change Password</a></li>
+        </ul>
+    </div>
+          </div>
+<!--Right Part End -->
+
+							</div>
+
+							</div>
+						</div>
+						<!-- Card -->
+
+
+					</div>
+					<!--Grid column-->
+
+				</div>
+				<!--Grid row-->
+
+			</section>
+			<!--Section: Block Content-->
+
+		
+	</div>
+
+
+
+
+	<!--JQUERY-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>	
+<!-- js changepassword -->
+<script type="text/javascript"  th:src="@{/js/change.js}"  src="static/js/change.js" ></script>
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">  
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+	<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+		          
+    <title>Document</title>
+</head>
+<body>
+<div class="alert alert-danger" th:if="${error != null}" th:text="${error}"></div>
+<!-- fragments -->			
+<div th:replace="/fragments/navTopBar"></div>
+<div th:replace="/fragments/navbar"></div>	
+<!-- end fragments -->
+
+ <form th:action="@{/add-to-cart}" th:object="${product}" method="post" >
+   <div class="container" style="margin-top: 30px">
+    <div class="row">
+        <div class="col-sm-3">
+            <h4>Categories</h4>
+            <ul class="list-group">
+                <a th:href="@{/shop}"><li class="list-group-item">All Products</li></a>
+                <a href="" th:each="category, iStat : ${categories}"
+                   th:href="@{/shop/category/{id}(id=${category.id})}"><li
+                               class="list-group-item" th:text="${category.name}"></li></a>
+
+            </ul>
+
+        </div>
+       
+        <div class="col-sm-9">
+        
+            <div class="card" style="margin-top: 20px" th:each="product : ${products}">
+                <div class="row no-gutters">
+                    <div class="col-sm-5 d-flex justify-content-center">
+                        <img class="" height="150px" width="150px" th:src="@{${'/productImages/' + product.imageName}}" th:alt="${product.name}">
+                    </div>
+                    <div class="col-sm-7 d-flex justify-content-center">
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${product.name}"></h5>
+                            <h4>₹ <span th:text="${product.price}"></span></h4>
+                            <p th:text="${product.description}" >Suresh Dasari is a founder and technical lead developer in tutlane.</p>
+                             <!-- AGREGE EXISTENCIA -->
+                             <h6>Existencia Stock:<span th:text="${product.existencia}"></span></h6>    
+                            <a href="#" th:href="@{/shop/viewproduct/{id}(id=${product.id})}" class="btn btn-primary">View Product</a>    
+                
+
+									<!--    <a href="" th:href="@{/addToCart/{id}(id = ${product.id})}" class="btn btn-primary">Add to cart</a> -->
+	
+									<!--  -->
+									<div id="product">
+                                    <h4>Available Options</h4>
+                                    <div class="form-group box-info-product">
+                                        <div class="option quantity">
+                                            <div class="input-group quantity-control" unselectable="on" style="-webkit-user-select: none;">
+                                                <label>Qty</label>
+                                                <input class="form-control" type="text" name="quantity" value="1">
+                                                <input hidden="hidden" name="id" th:value="${product.id}" />
+                                                <span class="input-group-addon product_quantity_down">-</span>
+                                                <span class="input-group-addon product_quantity_up">+</span>
+                                            </div>
+                                        </div>
+                                        <div class="cart">
+                                            <input type="submit" data-toggle="tooltip" title="" value="Add to Cart" data-loading-text="Loading..." id="button-cart" class="btn btn-mega btn-lg" data-original-title="Add to Cart">
+
+                                            <!--<input type="button" data-toggle="tooltip" title="" value="Add to Cart" data-loading-text="Loading..." id="button-cart" class="btn btn-mega btn-lg" onclick="cart.add('42', '1');" data-original-title="Add to Cart">-->
+                                        </div>
+                                    </div>
+
+                                </div>
+									
+									<!--  -->
+								</div>
+                    </div>
+                </div>
+
+          
+             
+           
+        </div>
+      
+    </div>
+</div>
+
+  </form>
+<!--JQUERY-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>	
+
+
+<!-- eso es para aumentar el quantity  -->
+<script type="text/javascript" th:src="@{/js/qty_minus_plus.js}"></script>
+</body>
+</html>

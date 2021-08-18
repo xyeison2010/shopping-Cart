@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">    
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">	
+<!-- Los iconos tipo Solid de Fontawesome-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.8/css/solid.css">
+		
+    <title>Document</title>
+</head>
+<body>
+<!-- fragments -->			
+<div th:replace="/fragments/navTopBar"></div>
+<div th:replace="/fragments/navbar"></div>	
+<!-- end fragments -->
+	<div class="main-container container">
+		<form th:action="@{/checkout}" th:object="${shoppingCart}"
+			enctype="multipart/form-data" method="post">
+			<!--Section: Block Content-->
+			<section class="mt-5 mb-4">
+
+				<!--Grid row-->
+				<div class="row">
+
+					<!--Grid column-->
+					<div class="col-lg-8 mb-4">
+
+						<!-- Card -->
+						<div class="card wish-list pb-1">
+							<div class="card-body">
+
+								<!-- Main Container  -->
+				<div class="main-container container">
+ 
+ <ul class="breadcrumb">
+        <li><a href="#"><i class="fa fa-home"></i></a></li>
+        <li><a href="#">Order History</a></li>
+    </ul>
+
+    <div class="row">
+        <!--Middle Part Start-->
+        <div id="content" class="col-sm-12">
+            <div th:if="${param.success}">
+                <div class="alert alert-info">Your order has been created successfully.</div>
+            </div>
+
+            <h2 class="title">Order History</h2>
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <td class="text-center">Order ID</td>
+                        <td class="text-left">Payment Method</td>
+                        <td class="text-left">Shipping Method</td>
+                        <td class="text-center">Status</td>
+                        <td class="text-center">Order Date</td>
+                        <td class="text-right">G. Total</td>
+                        <td></td>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="order : ${orders}">
+                        <!--<td class="text-center">
+                            <a th:href="@{/order-details(id=${order.id})}" target="_blank"><img width="85" class="img-thumbnail" th:title="${order.product.name}" th:alt="${order.product.name}" th:src="#adminPath+${order.product.getFullImage1Url()}"></a>
+                        </td>-->
+                        <td class="text-left"><a th:href="@{/order-details(id=${order.id})}" th:text="'# '+${order.id}"></a></td>
+                        <td class="text-center" th:text="${order.paymentMethod}"></td>
+                        <td class="text-center" th:text="${order.shippingMethod}"></td>
+                        <td class="text-center" th:text="${order.orderStatus}"></td>
+                        <td class="text-center" th:text="${order.orderDate}"></td>
+                        <td class="text-right" th:text="${order.grandTotal}"></td>
+                        <td class="text-center">
+                            <a class="btn btn-info" title="" data-toggle="tooltip" th:href="@{/order-details(id=${order.id})}" data-original-title="View"><i class="fa fa-eye"></i></a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <!--Middle Part End-->
+
+    <!--     <div th:replace="/my-account/template/leftnav"></div> -->
+
+    </div>							
+								</div>
+								<!-- //Main Container -->
+
+							</div>
+						</div>
+						<!-- Card -->
+
+					</div>
+					<!--Grid column-->
+
+					<!--Grid column-->
+					<div class="col-lg-4">
+
+						<!-- Card -->
+						<div class="card mb-4">
+							<div class="card-body">
+								<h4 class="panel-title">
+									<i class="fa fa-user"></i> tu cuenta
+								</h4>
+								<div class="panel-body">
+                <!--Right Part Start -->
+          <aside class="col-sm-12 hidden-xs content-aside col-md-12" id="column-right">
+             <h2 class="subtitle">Account</h2>
+            <div class="list-group">
+             <ul class="list-item">
+            <li><a th:href="@{/my-account}"><i class="fa fa-dashboard"></i> My Account</a></li>
+            <li><a th:href="@{/order-history}"><i class="fa fa-history"></i> Order History</a></li>
+            <li><a th:href="@{/change-password}"><i class="fa fa-key"></i> Change Password</a></li>
+        </ul>
+    </div>
+          </aside>
+<!--Right Part End -->
+
+							</div>
+						</div>
+						<!-- Card -->
+
+		
+
+
+					</div>
+					<!--Grid column-->
+
+				</div>
+				<!--Grid row-->
+
+			</section>
+			<!--Section: Block Content-->
+
+		</form>
+	</div>
+
+
+
+
+	<!--JQUERY-->
+<script src="https://code.jquery.com/jquery-3.3.1.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script> 
+<script src="https://use.fontawesome.com/releases/v5.0.7/js/all.js"></script>	
+</body>
+</html>
