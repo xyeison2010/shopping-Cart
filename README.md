@@ -1,5 +1,5 @@
 # shopping-Cart
-Shopping cart con base de datos mysql, spring boot , spring security, thymeleaf y jquery.
+Shopping cart con base de datos MySql, backend use Spring Boot la seguridad use Spring Security y Jwt, el fronted use Thymeleaf con Jquery.
 
 # Requisitos completados
 * [x] **Auth/login.** Se puede iniciar sesión en `/auth` con una cuenta de Google.
